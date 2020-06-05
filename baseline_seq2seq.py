@@ -191,11 +191,11 @@ def readLangs(lang1, lang2, reverse=False):
     print("Reading lines...")
 
     # Read the file and split into lines
-    lines = open('data/%s-%s.txt' % (lang1, lang2), encoding='utf-8').\
+    lines = open('train.txt', encoding='utf-8').\
         read().strip().split('\n')
 
-    # Split every line into pairs and normalize
-    pairs = [[normalizeString(s) for s in l.split('\t')] for l in lines]
+    # Split every line into pairs and normalize <<< CHANGE COMMENT
+    pairs = [[unicodeToAscii(s.strip()) for s in l.split('\t')] for l in lines]
 
     # Reverse pairs, make Lang instances
     if reverse:
@@ -218,22 +218,11 @@ def readLangs(lang1, lang2, reverse=False):
 # earlier).
 #
 
-MAX_LENGTH = 10
-
-eng_prefixes = (
-    "i am ", "i m ",
-    "he is", "he s ",
-    "she is", "she s ",
-    "you are", "you re ",
-    "we are", "we re ",
-    "they are", "they re "
-)
-
+MAX_LENGTH = 128
 
 def filterPair(p):
     return len(p[0].split(' ')) < MAX_LENGTH and \
-        len(p[1].split(' ')) < MAX_LENGTH and \
-        p[1].startswith(eng_prefixes)
+        len(p[1].split(' ')) < MAX_LENGTH
 
 
 def filterPairs(pairs):
@@ -263,7 +252,7 @@ def prepareData(lang1, lang2, reverse=False):
     return input_lang, output_lang, pairs
 
 
-input_lang, output_lang, pairs = prepareData('eng', 'fra', True)
+input_lang, output_lang, pairs = prepareData('eng', 'num', True)
 print(random.choice(pairs))
 
 
@@ -753,7 +742,7 @@ hidden_size = 256
 encoder1 = EncoderRNN(input_lang.n_words, hidden_size).to(device)
 attn_decoder1 = AttnDecoderRNN(hidden_size, output_lang.n_words, dropout_p=0.1).to(device)
 
-trainIters(encoder1, attn_decoder1, 75000, print_every=5000)
+trainIters(encoder1, attn_decoder1, 25000, print_every=5000)
 
 ######################################################################
 #
@@ -776,7 +765,7 @@ evaluateRandomly(encoder1, attn_decoder1)
 #
 
 output_words, attentions = evaluate(
-    encoder1, attn_decoder1, "je suis trop froid .")
+    encoder1, attn_decoder1, "86 133858968 1 71794 864973611 30833783 204313 149763 563 294939")
 plt.matshow(attentions.numpy())
 
 
@@ -812,13 +801,13 @@ def evaluateAndShowAttention(input_sentence):
     showAttention(input_sentence, output_words, attentions)
 
 
-evaluateAndShowAttention("elle a cinq ans de moins que moi .")
+evaluateAndShowAttention("563 2833204313 723 94 36378319 2144143 212 1 38258657826865 4315743 94 563 396498359")
 
-evaluateAndShowAttention("elle est trop petit .")
+evaluateAndShowAttention("563 44965 79433 59 285686 120 8899735432 975 780 94 014829")
 
-evaluateAndShowAttention("je ne crains pas de mourir .")
+evaluateAndShowAttention("563 7133396816 44965 212 868581996 792596 2515839")
 
-evaluateAndShowAttention("c est un jeune directeur plein de talent .")
+evaluateAndShowAttention("3127195832 94 863816 29938342 59519933 478746 889933 163 658126 2976333 374865 29493 214 89")
 
 
 ######################################################################

@@ -1,6 +1,7 @@
 import wikipedia
 import nltk
-
+import random
+import math
 
 def merge_sentences(sents1, sents2):
     output = []
@@ -51,10 +52,19 @@ def main():
     print(corpus_converted[:10])
     print(len(corpus_converted))
 
-    merged = merge_sentences(corpus_converted, corpus_splitted)
+    merged = merge_sentences(corpus_splitted, corpus_converted)
 
-    with open("dataset.txt", "w") as writer:
-        for line in merged:
+    random.seed(21)
+    random.shuffle(merged)
+    train_data = merged[:math.floor(0.8*len(merged))]
+    test_data = merged[math.floor(0.8*len(merged)):]
+
+    with open("train.txt", "w") as writer:
+        for line in train_data:
+            writer.write(line+"\n")
+
+    with open("test.txt", "w") as writer:
+        for line in test_data:
             writer.write(line+"\n")
 
 
