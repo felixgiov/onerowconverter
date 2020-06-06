@@ -57,16 +57,17 @@ def main():
     random.seed(21)
     random.shuffle(merged)
     train_data = merged[:math.floor(0.8*len(merged))]
-    test_data = merged[math.floor(0.8*len(merged)):]
+    eval_data = merged[math.floor(0.8*len(merged)):]
 
-    with open("train.txt", "w") as writer:
+    with open("data/train.txt", "w") as writer:
         for line in train_data:
             writer.write(line+"\n")
 
-    with open("test.txt", "w") as writer:
-        for line in test_data:
+    with open("data/eval.txt", "w") as writer:
+        for line in eval_data:
             writer.write(line+"\n")
 
 
 if __name__ == '__main__':
     main()
+
