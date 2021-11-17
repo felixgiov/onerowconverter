@@ -1,7 +1,6 @@
-# onerowconverter
+# onerowdecoder
 
-Imagine that we have a keyboard with only one row and a space bar. 
-That one row is the number row that usually located on the top row of a keyboard. 
+Imagine that we have a keyboard with only a space bar and one row, which is the number row that usually located on the top row of a keyboard. 
 Therefore, there are only 13 characters, including space, that we can use for typing.
 But surely, we can’t construct proper sentences just by using these 13 characters. 
 We need to represent all the remaining letters and symbols into these characters. 
